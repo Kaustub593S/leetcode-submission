@@ -1,21 +1,22 @@
 class Solution {
 
-    //using left right pointer
+    //using min value concept
 
     public int maxProfit(int[] prices) {
-
-        int left=0;
-        int right=1;
+        
+        int min=prices[0];
         int maxprofit=0;
 
-        while(right<prices.length)
+        for(int i=1;i<prices.length;i++)
         {
-            int profit=prices[right]-prices[left];
-            maxprofit=Math.max(profit,maxprofit);
-            if(profit<0)
-            left=right;
-
-            right++;
+            if(min>prices[i])
+            {
+                min=prices[i];
+            }
+            else
+            {
+                maxprofit=Math.max(maxprofit,prices[i]-min);
+            }
         }
         return maxprofit;
 
