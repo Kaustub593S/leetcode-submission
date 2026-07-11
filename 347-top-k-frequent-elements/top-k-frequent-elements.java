@@ -1,7 +1,7 @@
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         
-    //Minheap Solution
+    //BucketSort
 
         HashMap<Integer,Integer> map=new HashMap<>();
         for(int i:nums)
@@ -9,20 +9,35 @@ class Solution {
             map.put(i,map.getOrDefault(i,0)+1);
         }
 
-        PriorityQueue<Map.Entry<Integer,Integer>> minHeap=new PriorityQueue<>((a,b)->a.getValue()-b.getValue());
+        List<Integer> bucket[]=new ArrayList[nums.length+1];
+
         for(Map.Entry<Integer,Integer> entry: map.entrySet())
         {
-            minHeap.offer(entry);
-
-            if(minHeap.size()>k)
+            if(bucket[entry.getValue()]==null)
             {
-                minHeap.poll();
+                bucket[entry.getValue()]=new ArrayList<>();
+            }
+            bucket[entry.getValue()].add(entry.getKey()); 
+        }
+
+        int[] ans=new int[k];
+        int index=0;
+
+        for(int i=bucket.length-1;i>=0;i--)
+        {
+            if(bucket[i]==null)
+                continue;
+
+            for(int num:bucket[i])
+            {
+                ans[index++]=num;
+
+                if(index==k)
+                    return ans;
             }
         }
-        int ans[]=new int[k];
-        for(int i=k-1;i>=0;i--){
-            ans[i]=minHeap.poll().getKey();
-        }
-        return ans;
+
+    return ans;
+
     }
 }
